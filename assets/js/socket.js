@@ -66,6 +66,8 @@ const createSocket = (topicId) => {
       console.log("Unable to join", resp);
     });
 
+  channel.on(`comments:${topicId}:new`, renderComment);
+
   document.querySelector("button").addEventListener("click", () => {
     const content = document.querySelector("textarea").value;
     channel.push("comment:add", { content });
@@ -77,14 +79,23 @@ const createSocket = (topicId) => {
 
 const renderComments = (comments) => {
   const renderedComments = comments.map((comment) => {
-    return `
-      <li class="collection-item">
-        ${comment.content}
-      </li>
-    `;
+    return commentTemplate(comment.content);
   });
 
   document.querySelector(".collection").innerHTML = renderedComments.join("");
+};
+
+const renderComment = (comment) => {
+  const renderedComment = commentTemplate(comment.comment.content);
+  document.querySelector(".collection").innerHTML += renderedComment;
+};
+
+const commentTemplate = (comment) => {
+  return `
+        <li class="collection-item">
+          ${comment}
+        </li>
+      `;
 };
 
 window.createSocket = createSocket;

@@ -2,6 +2,8 @@ defmodule DiscussWeb.CommentsChannel do
   use DiscussWeb, :channel
   alias DiscussWeb.{Topic, Comment}
 
+  @spec join(<<_::64, _::_*8>>, any, Phoenix.Socket.t()) ::
+          {:ok, %{comments: any}, Phoenix.Socket.t()}
   def join("comments:" <> topic_id, _params, socket) do
     topic_id = String.to_integer(topic_id)
 
