@@ -79,21 +79,28 @@ const createSocket = (topicId) => {
 
 const renderComments = (comments) => {
   const renderedComments = comments.map((comment) => {
-    return commentTemplate(comment.content);
+    return commentTemplate(comment);
   });
 
   document.querySelector(".collection").innerHTML = renderedComments.join("");
 };
 
 const renderComment = (comment) => {
-  const renderedComment = commentTemplate(comment.comment.content);
+  const renderedComment = commentTemplate(comment.comment);
   document.querySelector(".collection").innerHTML += renderedComment;
 };
 
 const commentTemplate = (comment) => {
+  let email = "Anonymous";
+  if (comment.user) {
+    email = comment.user.email;
+  }
   return `
         <li class="collection-item">
-          ${comment}
+          ${comment.content}
+          <div class="secondary-content">
+            ${email}
+          </div>
         </li>
       `;
 };
